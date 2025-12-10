@@ -7,19 +7,26 @@
 
 import SwiftUI
 
-struct Card: Identifiable {
+class Card{
     
-    let id = UUID()
-    let emoji: String
+    
+    
+    
+    let image: String
     var isFaceUp = false
     var isMatched = false
     
-    init(emoji: String, isFaceUp: Bool = false, isMatched: Bool = false) {
+    init(image: String, isFaceUp: Bool = false, isMatched: Bool = false) {
         
-        self.emoji = emoji
+        self.image = image
         self.isFaceUp = isFaceUp
         self.isMatched = isMatched
         
     }
+ 
+    
+    
+    
+    
     
 }
