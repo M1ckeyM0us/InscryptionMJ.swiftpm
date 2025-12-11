@@ -7,12 +7,18 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct StatView: View {
+    @State var wPCT = 0.0
+    @State var gamesPlayed = 0
+    @State var lowestFail = 10
+        var body: some View {
+            VStack{
+                Text("Match the goobers stats")
+                    .font(.largeTitle)
+                Text("Win percent: \(wPCT, specifier: "%.1f")%")
+                Text("Games played: \(gamesPlayed)")
+                Text("Lowest amount of tries: \(lowestFail)")
+            }
+        }
     }
-}
 
-#Preview {
-    SwiftUIView()
-}

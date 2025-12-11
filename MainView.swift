@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct MainView: View {
+    @State var wPCT = 0.0
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Text("Match the goobers")
+                .font(.largeTitle)
+            Text("Win percent: \(wPCT, specifier: "%.1f")%")
+        }
     }
 }
 
