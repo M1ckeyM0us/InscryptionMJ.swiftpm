@@ -8,39 +8,35 @@
 import SwiftUI
 
 struct MemoryGameView: View {
-
     @State private var cards: [Card] = []
     @State private var indexOfFirstFlipped: Int? = nil
-
-    let emojis = ["🐶", "🐱", "🐶", "🐱"]  // 2×2 matching set
-
+    
+    let emojis = ["🐶", "🐱", "🐶", "🐱"]
+    
     var body: some View {
         VStack {
             Text("Memory Game")
                 .font(.largeTitle)
                 .padding(.bottom, 10)
-
+            
             LazyVGrid(
                 columns: Array(repeating: GridItem(.flexible()), count: 2),
                 spacing: 12
-            ){
+            ) {
                 ForEach(cards.indices, id: \.self) { index in
-
                     let card = cards[index]
-
+                    
                     Button {
                         handleTap(index)
                     }
+                    
                     label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(
-                                    card.isFaceUp || card.isMatched
-                                        ? Color.white : Color.blue
-                                )
+                                .fill(card.isFaceUp || card.isMatched ? Color.white : Color.blue)
                                 .frame(height: 120)
                                 .shadow(radius: 3)
-
+                            
                             if card.isFaceUp || card.isMatched {
                                 Text(card.emoji)
                                     .font(.largeTitle)
@@ -51,7 +47,7 @@ struct MemoryGameView: View {
                 }
             }
             .padding()
-
+            
             Button("Restart") {
                 startGame()
             }
@@ -61,34 +57,40 @@ struct MemoryGameView: View {
             startGame()
         }
     }
-
+    
     func startGame() {
-        cards = emojis.shuffled().map { Card(emoji: $0) }
+        cards = emojis.shuffled().map { emoji in
+            Card(emoji: emoji)
+        }
         indexOfFirstFlipped = nil
     }
-
+    
     func handleTap(_ index: Int) {
         if cards[index].isMatched || cards[index].isFaceUp { return }
-
+        
         cards[index].isFaceUp = true
-
-        if let firstIndex = indexOfFirstFlipped {
-            checkMatch(firstIndex, index)
+        
+        if let first = indexOfFirstFlipped {
+            checkMatch(first, index)
             indexOfFirstFlipped = nil
         } else {
             indexOfFirstFlipped = index
         }
     }
-
+    
     func checkMatch(_ first: Int, _ second: Int) {
+        
         if cards[first].emoji == cards[second].emoji {
             cards[first].isMatched = true
             cards[second].isMatched = true
-        } else {
+        }
+        
+        else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 cards[first].isFaceUp = false
                 cards[second].isFaceUp = false
             }
         }
+        
     }
 }
