@@ -10,7 +10,7 @@ import SwiftData
 
 struct StatsView: View {
     
-    @Query var games: [Game]
+    /*@Query var games: [Game]
     
     
     var triesList: [Int] {
@@ -36,10 +36,10 @@ struct StatsView: View {
     
     var highestTries: Int {
         triesList.max() ?? 0
-    }
+    }*/
 
     var body: some View {
-        NavigationStack {
+        /*NavigationStack {
             ScrollView {
                 VStack(spacing: 25) {
 
@@ -89,5 +89,6 @@ struct StatsView: View {
         .background(.white)
         .cornerRadius(16)
         .shadow(radius: 3)
+         */
     }
 }
