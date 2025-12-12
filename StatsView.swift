@@ -7,88 +7,36 @@
 
 import SwiftUI
 import SwiftData
-
-struct StatsView: View {
     
-    /*@Query var games: [Game]
-    
-    
-    var triesList: [Int] {
-        games.map { $0.tries }
-    }
-
-    
-    var totalGames: Int {
-        games.count
-    }
-
-    
-    var averageTries: Double {
-        if triesList.isEmpty { return 0 }
-        return Double(triesList.reduce(0, +)) / Double(triesList.count)
-    }
-
-    
-    var lowestTries: Int {
-        triesList.min() ?? 0
-    }
-
-    
-    var highestTries: Int {
-        triesList.max() ?? 0
-    }*/
-
-    var body: some View {
-        /*NavigationStack {
-            ScrollView {
-                VStack(spacing: 25) {
-
-                    statCard(
-                        title: "Total Games",
-                        bigValue: "\(totalGames)"
-                    )
-
-                    statCard(
-                        title: "Average Tries",
-                        bigValue: String(format: "%.1f", averageTries),
-                        minValue: "Lowest: \(lowestTries)",
-                        maxValue: "Highest: \(highestTries)"
-                    )
-                }
-                .padding()
+    struct StatsView: View {
+        @State var gamesPlayed = 0
+        @State var averageTries = 0.0
+        @State var lowestTries = 10
+        @State var highestTries = 0
+        
+        var body: some View {
+            VStack(spacing: 18) {
+                
+                // Title
+                Text("Game Stats")
+                    .font(.largeTitle)
+                    .padding(.top)
+                
+                // Stats
+                Text("Games Played: \(gamesPlayed)")
+                    .font(.title3)
+                
+                Text("Average Tries: \(averageTries, specifier: "%.1f")")
+                    .font(.title3)
+                
+                Text("Lowest Tries: \(lowestTries)")
+                    .font(.title3)
+                
+                Text("Highest Tries: \(highestTries)")
+                    .font(.title3)
+                
+                Spacer()
             }
-            .navigationTitle("Stats")
+            .padding()
         }
     }
-
-    
-    func statCard(title: String, bigValue: String, minValue: String? = nil, maxValue: String? = nil) -> some View {
-
-        VStack(spacing: 8) {
-
-            Text(title)
-                .font(.headline)
-
-            Text(bigValue)
-                .font(.title2.bold())
-
-            if let min = minValue {
-                Text(min)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
-
-            if let max = maxValue {
-                Text(max)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(.white)
-        .cornerRadius(16)
-        .shadow(radius: 3)
-         */
-    }
-}

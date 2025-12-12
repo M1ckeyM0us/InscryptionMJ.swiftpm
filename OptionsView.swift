@@ -16,9 +16,9 @@ struct OptionsView: View {
             VStack(spacing: 25) {
                 
                 Text("Options")
-                    .font(.largeTitle.bold())
+                    .font(.largeTitle)
                 
-                // DIFFICULTY SLIDER
+                //difficulties
                 VStack {
                     Text("Difficulty")
                         .font(.headline)
@@ -36,7 +36,7 @@ struct OptionsView: View {
                 }
                 .padding(.horizontal)
                 
-                // ANIMATION TOGGLE
+                //animations
                 Toggle("Enable Flip Animations", isOn: $settings.animationsEnabled)
                     .padding(.horizontal)
                 
