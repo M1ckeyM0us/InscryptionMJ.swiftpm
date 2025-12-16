@@ -6,37 +6,30 @@
 //
 
 import SwiftUI
-import SwiftData
-    
-    struct StatsView: View {
-        @State var gamesPlayed = 0
-        @State var averageTries = 0.0
-        @State var lowestTries = 10
-        @State var highestTries = 0
-        
-        var body: some View {
-            VStack(spacing: 18) {
-                
-                // Title
-                Text("Game Stats")
-                    .font(.largeTitle)
-                    .padding(.top)
-                
-                // Stats
-                Text("Games Played: \(gamesPlayed)")
-                    .font(.title3)
-                
-                Text("Average Tries: \(averageTries, specifier: "%.1f")")
-                    .font(.title3)
-                
-                Text("Lowest Tries: \(lowestTries)")
-                    .font(.title3)
-                
-                Text("Highest Tries: \(highestTries)")
-                    .font(.title3)
-                
-                Spacer()
-            }
-            .padding()
+
+struct StatsView: View {
+
+    var body: some View {
+        VStack(spacing: 20) {
+
+            Text("Game Stats")
+                .font(.largeTitle)
+                .padding(.top)
+
+            Text("Games Played: 12")
+                .font(.title3)
+
+            Text("Average Tries: 6.2")
+                .font(.title3)
+
+            Text("Lowest Tries: 4")
+                .font(.title3)
+
+            Text("Highest Tries: 9")
+                .font(.title3)
+
+            Spacer()
         }
+        .padding()
     }
+}

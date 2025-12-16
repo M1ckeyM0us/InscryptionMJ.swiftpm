@@ -20,39 +20,57 @@ struct MemoryGameView: View {
                 .font(.largeTitle)
                 .padding(.bottom, 10)
             
-            LazyVGrid(
-                columns: Array(repeating: GridItem(.flexible()), count: 2),
-                spacing: 12
-            ) {
-                ForEach(cards.indices, id: \.self) { index in
-                    let card = cards[index]
-                    
-                    Button {
-                        handleTap(index)
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(card.isFaceUp || card.isMatched ? Color.white : Color.blue)
-                                .frame(height: 120)
-                                .shadow(radius: 3)
-                                .animation(settings.animationsEnabled ? .easeInOut(duration: 0.25) : .none, value: card.isFaceUp)
-                            
-                            if card.isFaceUp || card.isMatched {
-                                Text(card.emoji)
-                                    .font(.largeTitle)
+            //James helped me out with grid
+            ScrollView {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 12) {
+                        
+                    ForEach(cards.indices, id: \.self) { index in
+                        let card = cards[index]
+                        
+                        Button {
+                            handleTap(index)
+                        }
+                        label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(card.isFaceUp || card.isMatched ? Color.white : Color.blue)
+                                    .frame(height: 120)
+                                    .shadow(radius: 3)
+                                    .animation(
+                                        settings.animationsEnabled
+                                        ? .easeInOut(duration: 0.25)
+                                        : .none,
+                                        value: card.isFaceUp
+                                    )
+                                
+                                if card.isFaceUp || card.isMatched {
+                                    Text(card.emoji)
+                                        .font(.largeTitle)
+                                }
                             }
                         }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding()
+                        .buttonStyle(.plain)
+                    }//foreach
+                    
+                }//grid
+                .padding()
+            }//scroll
             
-            Button("Restart") {
+            Button {
                 startGame()
             }
-            .padding(.top, 16)
-        }
+            label: {
+                Text("Restart Game")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(14)
+            }
+            .padding(.horizontal)
+            .padding(.top, 10)
+        }//VStack
         .onAppear {
             startGame()
         }
@@ -67,50 +85,64 @@ struct MemoryGameView: View {
         let chosen: [String]
         
         switch settings.difficulty {
+            
         case 0: chosen = easy
         case 1: chosen = medium
         default: chosen = hard
+            
         }
         
-        cards = (chosen + chosen).shuffled().map { Card(emoji: $0) }
+        let pairedEmojis = chosen + chosen
+        let shuffledEmojis = pairedEmojis.shuffled()
+
+        cards = shuffledEmojis.map { emoji in
+            Card(emoji: emoji)
+        }
         
         indexOfFirstFlipped = nil
         
     }//end of startgame
     
-    
     func handleTap(_ index: Int) {
-        if cards[index].isMatched || cards[index].isFaceUp { return }
+        if cards[index].isMatched || cards[index].isFaceUp {
+            return
+        }
         
         cards[index].isFaceUp = true
         
         if let first = indexOfFirstFlipped {
             checkMatch(first, index)
             indexOfFirstFlipped = nil
-        } else {
+        }
+        else {
             indexOfFirstFlipped = index
         }
         
     }// end of handletap
     
-    
     func checkMatch(_ first: Int, _ second: Int) {
         if cards[first].emoji == cards[second].emoji {
+            
             cards[first].isMatched = true
             cards[second].isMatched = true
+            
         }
         
         else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 if !settings.animationsEnabled {
+                    
                     cards[first].isFaceUp = false
                     cards[second].isFaceUp = false
+                    
                 }
                 
                 else {
                     withAnimation(.easeInOut(duration: 0.3)) {
+                        
                         cards[first].isFaceUp = false
                         cards[second].isFaceUp = false
+                        
                     }
                 }
             }

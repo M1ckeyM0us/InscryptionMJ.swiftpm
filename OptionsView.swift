@@ -15,14 +15,19 @@ struct OptionsView: View {
         NavigationStack {
             VStack(spacing: 25) {
                 
-                Text("Options")
+                Text("Options View")
                     .font(.largeTitle)
+                    .padding(.bottom, 10)
                 
                 //difficulties
                 VStack {
                     Text("Difficulty")
                         .font(.headline)
                     
+                    //The Slider lets the user pick a value from 0 to 2 (steps of 1)
+                    //The Binding converts:
+                    //settings.difficulty Int to Double
+                    //slider value Double to Int
                     Slider(value: Binding(
                         get: { Double(settings.difficulty) },
                         set: { settings.difficulty = Int($0) }
