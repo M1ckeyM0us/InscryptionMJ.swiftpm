@@ -13,18 +13,30 @@ struct MemoryGameView: View {
     
     @State private var cards: [Card] = []
     @State private var indexOfFirstFlipped: Int? = nil
+    @State private var tries = 0
+
+    // stats persistence
+    @AppStorage("gamesPlayed") var gamesPlayed = 0
+    @AppStorage("totalTries") var totalTries = 0
+    @AppStorage("lowestTries") var lowestTries = 0
+    @AppStorage("highestTries") var highestTries = 0
     
     var body: some View {
-        VStack {
-            Text("Memory Game")
-                .font(.largeTitle)
-                .padding(.bottom, 10)
-            
-            //James helped me out with grid
-            ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 12) {
+        ScrollView {
+            VStack {
+                Text("Memory Game")
+                    .font(.largeTitle)
+                    .padding(.bottom, 10)
+                
+                Text("Tries: \(tries)")
+                    .font(.headline)
+                
+                //James helped me out with grid
+                LazyVGrid(
+                    columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 12) {
                         
                     ForEach(cards.indices, id: \.self) { index in
+                        
                         let card = cards[index]
                         
                         Button {
@@ -36,41 +48,26 @@ struct MemoryGameView: View {
                                     .fill(card.isFaceUp || card.isMatched ? Color.white : Color.blue)
                                     .frame(height: 120)
                                     .shadow(radius: 3)
-                                    .animation(
-                                        settings.animationsEnabled
-                                        ? .easeInOut(duration: 0.25)
-                                        : .none,
-                                        value: card.isFaceUp
-                                    )
                                 
                                 if card.isFaceUp || card.isMatched {
+                                    
                                     Text(card.emoji)
                                         .font(.largeTitle)
+                                    
                                 }
                             }
                         }
                         .buttonStyle(.plain)
                     }//foreach
-                    
                 }//grid
                 .padding()
-            }//scroll
-            
-            Button {
-                startGame()
+                
+                Button("Restart") {
+                    startGame()
+                }
+                .padding(.top, 16)
             }
-            label: {
-                Text("Restart Game")
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(14)
-            }
-            .padding(.horizontal)
-            .padding(.top, 10)
-        }//VStack
+        }//scrollview
         .onAppear {
             startGame()
         }
@@ -78,6 +75,7 @@ struct MemoryGameView: View {
     }//end of body view
     
     func startGame() {
+        
         let easy = ["🐶", "🐱"]
         let medium = ["🐶", "🐱", "🐸", "🐵"]
         let hard = ["🐶", "🐱", "🐸", "🐵", "🐰", "🐼"]
@@ -92,18 +90,14 @@ struct MemoryGameView: View {
             
         }
         
-        let pairedEmojis = chosen + chosen
-        let shuffledEmojis = pairedEmojis.shuffled()
-
-        cards = shuffledEmojis.map { emoji in
-            Card(emoji: emoji)
-        }
-        
+        cards = (chosen + chosen).shuffled().map { Card(emoji: $0) }
         indexOfFirstFlipped = nil
+        tries = 0
         
     }//end of startgame
     
     func handleTap(_ index: Int) {
+        
         if cards[index].isMatched || cards[index].isFaceUp {
             return
         }
@@ -111,9 +105,13 @@ struct MemoryGameView: View {
         cards[index].isFaceUp = true
         
         if let first = indexOfFirstFlipped {
+            
+            tries += 1
             checkMatch(first, index)
             indexOfFirstFlipped = nil
+            
         }
+        
         else {
             indexOfFirstFlipped = index
         }
@@ -126,29 +124,50 @@ struct MemoryGameView: View {
             cards[first].isMatched = true
             cards[second].isMatched = true
             
+            if cards.allSatisfy({ $0.isMatched }) {
+                
+                saveStats()
+                
+            }
         }
         
         else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                if !settings.animationsEnabled {
-                    
-                    cards[first].isFaceUp = false
-                    cards[second].isFaceUp = false
-                    
-                }
-                
-                else {
-                    withAnimation(.easeInOut(duration: 0.3)) {
+                if settings.animationsEnabled {
+                    withAnimation {
                         
                         cards[first].isFaceUp = false
                         cards[second].isFaceUp = false
                         
                     }
                 }
+                
+                else {
+                    
+                    cards[first].isFaceUp = false
+                    cards[second].isFaceUp = false
+                    
+                }
             }
-            
         }
         
     }//end of checkmatch
+    
+    func saveStats() {
+        gamesPlayed += 1
+        totalTries += tries
+        
+        if lowestTries == 0 || tries < lowestTries {
+            
+            lowestTries = tries
+            
+        }
+        
+        if tries > highestTries {
+            
+            highestTries = tries
+            
+        }
+    }
     
 }//end of mem view
