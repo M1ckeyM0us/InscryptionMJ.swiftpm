@@ -58,7 +58,7 @@ struct MemoryGameView: View {
                             }
                         }
                         .buttonStyle(.plain)
-                    }//foreach
+}//foreach
                 }//grid
                 .padding()
                 
@@ -76,9 +76,9 @@ struct MemoryGameView: View {
     
     func startGame() {
         
-        let easy = ["🐶", "🐱"]
-        let medium = ["🐶", "🐱", "🐸", "🐵"]
-        let hard = ["🐶", "🐱", "🐸", "🐵", "🐰", "🐼"]
+        let easy = ["🥶", "🎄"]
+        let medium = ["🥶", "🎄", "🎅", "❄️"]
+        let hard = ["🥶", "🎄", "🎅", "❄️", "☃️", "🧊"]
         
         let chosen: [String]
         
