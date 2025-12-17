@@ -31,11 +31,12 @@ struct OptionsView: View {
                     Slider(value: Binding(
                         get: { Double(settings.difficulty) },
                         set: { settings.difficulty = Int($0) }
-                    ), in: 0...2, step: 1)
+                    ), in: 0...3, step: 1)
                     
                     Text(
-                        settings.difficulty == 0 ? "Easy" :
-                        settings.difficulty == 1 ? "Medium" : "Hard"
+                        settings.difficulty == 0 ? "Easy":
+                            settings.difficulty == 1 ? "Medium":
+                        settings.difficulty == 2 ? "Hard" : "silly"
                     )
                     .foregroundColor(.gray)
                 }

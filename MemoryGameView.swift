@@ -48,13 +48,16 @@ struct MemoryGameView: View {
                                     .fill(card.isFaceUp || card.isMatched ? Color.white : Color.blue)
                                     .frame(height: 120)
                                     .shadow(radius: 3)
-                                
+                                Image("Diego")
+                                    .resizable()
+                                    .frame(width: 120, height: 100)
                                 if card.isFaceUp || card.isMatched {
                                     
                                     Text(card.emoji)
                                         .font(.largeTitle)
                                     
                                 }
+                                
                             }
                         }
                         .buttonStyle(.plain)
@@ -79,14 +82,15 @@ struct MemoryGameView: View {
         let easy = ["🥶", "🎄"]
         let medium = ["🥶", "🎄", "🎅", "❄️"]
         let hard = ["🥶", "🎄", "🎅", "❄️", "☃️", "🧊"]
-        
+        let fun = ["🦼", "🥶", "🎄", "🎅", "❄️", "☃️", "🧊","🔼","▶️","↖️","🎦","ℹ️","⏺️","➡️","🔄","⏹️","*️⃣","🌕","🐒","🐗","🗻"]
         let chosen: [String]
         
         switch settings.difficulty {
             
         case 0: chosen = easy
         case 1: chosen = medium
-        default: chosen = hard
+        case 2: chosen = hard
+        default: chosen = fun
             
         }
         
