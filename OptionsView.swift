@@ -42,7 +42,7 @@ struct OptionsView: View {
                             ? "Easy"
                             : settings.difficulty == 1
                                 ? "Medium"
-                                : settings.difficulty == 2 ? "Hard" : "silly"
+                                : settings.difficulty == 2 ? "Hard" : "Silly"
                     )
                     .foregroundColor(.gray)
                 }
