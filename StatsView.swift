@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct StatsView: View {
-    
+
     // persistence
     @AppStorage("gamesPlayed") var gamesPlayed = 0
     @AppStorage("totalTries") var totalTries = 0
@@ -17,12 +17,12 @@ struct StatsView: View {
 
     // average
     var averageTries: Double {
-        
+
         if gamesPlayed == 0 {
             return 0
         }
         return Double(totalTries) / Double(gamesPlayed)
-        
+
     }
 
     var body: some View {
@@ -69,19 +69,19 @@ struct StatsView: View {
                 .font(.title2.bold())
 
             if let minValue = minValue {
-                
+
                 Text("Lowest: \(minValue)")
                     .font(.caption)
                     .foregroundColor(.gray)
-                
+
             }
 
             if let maxValue = maxValue {
-                
+
                 Text("Highest: \(maxValue)")
                     .font(.caption)
                     .foregroundColor(.gray)
-                
+
             }
         }
         .frame(maxWidth: .infinity)
