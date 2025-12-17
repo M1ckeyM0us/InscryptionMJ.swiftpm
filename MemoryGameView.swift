@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MemoryGameView: View {
     
+    // using settings here
     @EnvironmentObject var settings: GameSettings
     
     @State private var cards: [Card] = []
@@ -94,12 +95,14 @@ struct MemoryGameView: View {
             
         }
         
+        // creates paired and shuffled cards, then resets the selected card index and the tries counter
         cards = (chosen + chosen).shuffled().map { Card(emoji: $0) }
         indexOfFirstFlipped = nil
         tries = 0
         
     }//end of startgame
     
+    //flips a tapped card, ignores already matched or faceup cards and tracks the first flipped card and when a second card is tapped it counts a try and checks if the cards match
     func handleTap(_ index: Int) {
         
         if cards[index].isMatched || cards[index].isFaceUp {
@@ -122,6 +125,7 @@ struct MemoryGameView: View {
         
     }// end of handletap
     
+    // checks if two flipped cards match, marks them as matched if they do and saves stats when all cards are matched or flips them back down after a short time if they don’t
     func checkMatch(_ first: Int, _ second: Int) {
         if cards[first].emoji == cards[second].emoji {
             
@@ -157,6 +161,7 @@ struct MemoryGameView: View {
         
     }//end of checkmatch
     
+    // updates the game statistics by increasing games played and other things
     func saveStats() {
         gamesPlayed += 1
         totalTries += tries
